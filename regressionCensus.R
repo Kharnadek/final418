@@ -13,7 +13,7 @@ plot(income.tracts.no0$Income~income.tracts.no0$Pm2.5)
 #Perform a linear regression on the two variables. You should decide which one is dependant
 lm.model <- lm(income.tracts.no0$Income~income.tracts.no0$Pm2.5)
 #Add the regression model to the plot you created
-plot(income.tracts.no0$Income~income.tracts.no0$Pm2.5)
+plot(income.tracts.no0$Income~income.tracts.no0$Pm2.5, main = "PM2.5 and Income Linear Regression", xlab="PM2.5", ylab="Median Income",)
 abline(lm.model, col = "red")
 #Get the summary of the results
 summary(lm.model)
@@ -31,7 +31,7 @@ head(income.tracts.no0)
 #Now, create choropleth map of residuals
 map_resid <- tm_shape(income.tracts.no0) +
   tm_polygons(col = "residuals",
-              title = "Median Income",
+              title = "Residuals",
               style = "jenks", midpoint = 0,
               palette = "RdBu", n = 6)
 

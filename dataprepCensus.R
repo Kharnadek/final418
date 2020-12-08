@@ -49,7 +49,7 @@ income.tracts <- spTransform(income.tracts, CRS("+init=epsg:26910"))
 #Create choropleth map of income:
 map_Income <- tm_shape(income.tracts) +
   tm_polygons(col = "Income",
-              title = "Median Income",
+              title = "Median Income \n In MVRD",
               style = "jenks",
               palette = "viridis", n = 6) +
   tm_legend(legend.position = c("LEFT", "BOTTOM"))
@@ -68,7 +68,7 @@ fullgrid(grd)    <- TRUE
 #Reproject the grid:
 proj4string(grd) <- proj4string(income.tracts)
 
-
+#ADD CODE SECTION:
 
 ####################
 #Descriptive Statistics
@@ -139,7 +139,7 @@ grid.arrange(table1, newpage = TRUE)
 
 income.nb <- poly2nb(income.tracts) #Create neighbour object
 income.net <- nb2lines(income.nb, coords=coordinates(income.tracts)) #create lines object with all previously defined Queen neighbour connnections
-crs(income.net) <- crs(income.tracts) #Apply same coordinate system from vriClean object
+crs(income.net) <- crs(income.tracts) #Apply same coordinate system from income tract object
 
 
 #Mapping Queens Case
@@ -150,7 +150,7 @@ tm_shape(income.tracts) + tm_borders(col='#DDEAF6') +
 income.lw <- nb2listw(income.nb, zero.policy = TRUE, style = "W")
 print.listw(income.lw, zero.policy = TRUE) #print weight list with previously defined parameters
 
-#Morans test is performed with vriClean object, selected variable, and weights matrix
+#Morans test is performed with income tract object, selected variable, and weights matrix
 mi <- moran.test(income.tracts$Income, income.lw, zero.policy = TRUE)
 mi
 
@@ -176,6 +176,9 @@ if ( z > 1.96) {
   print("No significant spatial autocorrelation")
 }
 
+#####################
+
+
 ##################
 #IDW
 
@@ -185,10 +188,11 @@ r       <- raster(P.idw)
 r.m     <- mask(r, income.tracts)
 
 idwmap <- tm_shape(r.m) + 
-  tm_raster(n=10,palette = "RdBu",
+  tm_raster(n=10,palette = "seq", 
             title="IDW \nPredicted PM2.5 \n(in ppm)") + 
   tm_shape(pm2.5) + tm_dots(size=0.2) +
-  tm_legend(legend.outside=TRUE)
+  tm_legend(legend.outside=TRUE) +
+  tm_layout(aes.palette = list(seq = "-RdBu"))
 
 IDW.out <- vector(length = length(pm2.5))
 for (i in 1:length(pm2.5)) {

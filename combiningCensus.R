@@ -18,10 +18,11 @@ income.tracts$Pm2.5 <- round(extract(r, income.tracts, fun = mean)[,1], 5)
 
 map_pm25 <- tm_shape(income.tracts) +
   tm_polygons(col = "Pm2.5",
-              title = "pm2.5",
+              title = "Mean PM2.5 Per Tract",
               style = "jenks",
-              palette = "viridis", n = 6) +
-  tm_legend(legend.position = c("LEFT", "BOTTOM"))
+              palette = "seq", n = 6) +
+  tm_legend(legend.position = c("LEFT", "BOTTOM")) +
+  tm_layout(aes.palette = list(seq = "-RdBu"))
 
 map_pm25
 

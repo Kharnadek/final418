@@ -47,5 +47,5 @@ map_coef <- tm_shape(income.tracts.no0) +
   tm_polygons(col = "coeff",
               title = "Coefficients",
               style = "jenks",
-              palette = "viridis", n = 6)
+              palette = "Reds", n = 5)
 map_coef
